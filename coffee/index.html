@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1c1814">
+<title>Honey Coffee — меню (демо)</title>
+<meta name="description" content="Демо QR-меню для кафе и ресторанов: категории, поиск, фото блюд, заказ официанту, три языка.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f0e8; --card:#fffdf9; --ink:#1f1a15; --muted:#6f655a; --line:#e6ddd0;
+  --accent:#b5502a; --accent-ink:#fff; --accent-soft:#f3e2d6; --dark:#1c1814;
+  --hit:#b5502a; --spicy:#c0392b; --veg:#3f7a4a;
+  --r:18px; --shadow:0 6px 24px rgba(40,28,15,.08);
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Manrope,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+img{display:block;max-width:100%}
+.wrap{max-width:560px;margin:0 auto;position:relative}
+h1,h2,h3{margin:0}
+.serif{font-family:"Playfair Display",Georgia,serif}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+
+/* Шапка */
+.hero{position:relative;height:250px;overflow:hidden;background:var(--dark)}
+.hero img{width:100%;height:100%;object-fit:cover;opacity:.85}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,15,10,.35) 0%,rgba(20,15,10,.05) 40%,rgba(20,15,10,.85) 100%)}
+.topbar{position:absolute;z-index:2;top:12px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:center}
+.demo-tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);padding:5px 10px;border-radius:99px}
+.langs{display:flex;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);border-radius:99px;padding:3px}
+.langs button{color:#fff;font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;opacity:.75}
+.langs button[aria-pressed="true"]{background:#fff;color:var(--ink);opacity:1}
+.brand{position:absolute;z-index:2;left:16px;right:16px;bottom:18px;display:flex;gap:14px;align-items:flex-end;color:#fff}
+.logo{flex:none;width:64px;height:64px;border-radius:18px;background:var(--bg);color:var(--accent);display:grid;place-items:center;font:700 26px "Playfair Display",serif;box-shadow:0 4px 18px rgba(0,0,0,.3)}
+.brand h1{font:700 28px/1.1 "Playfair Display",serif}
+.brand p{margin:4px 0 0;font-size:13px;opacity:.9}
+.open{display:inline-flex;align-items:center;gap:6px}
+.open::before{content:"";width:7px;height:7px;border-radius:50%;background:#6fd08c}
+
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px 16px 4px}
+.quick button,.quick a{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--ink);text-decoration:none}
+.quick svg{width:20px;height:20px;stroke:var(--accent)}
+
+.promo{margin:12px 16px 0;border-radius:var(--r);background:var(--dark);color:#f5efe6;padding:14px 16px;display:flex;gap:12px;align-items:center}
+.promo b{display:block;font-size:15px}
+.promo span{font-size:13px;opacity:.8}
+.promo .pct{flex:none;width:52px;height:52px;border-radius:50%;background:var(--accent);display:grid;place-items:center;font-weight:800;font-size:15px;color:#fff}
+
+/* Липкая навигация */
+.nav{position:sticky;top:0;z-index:20;background:rgba(245,240,232,.94);backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .2s}
+.nav.stuck{border-color:var(--line)}
+.nav-row{display:flex;gap:8px;padding:10px 16px 0;align-items:center}
+.search{flex:1;display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0 12px;height:42px}
+.search svg{width:18px;height:18px;flex:none;stroke:var(--muted)}
+.search input{flex:1;border:0;outline:0;background:transparent;font:inherit;color:var(--ink);min-width:0}
+.icon-btn{width:42px;height:42px;flex:none;border-radius:12px;background:var(--card);border:1px solid var(--line);display:grid;place-items:center}
+.icon-btn svg{width:18px;height:18px;stroke:var(--ink)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:8px 14px;border-radius:99px;background:var(--card);border:1px solid var(--line);font-size:13px;font-weight:600;white-space:nowrap}
+.chip[aria-current="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.filters{display:flex;gap:6px;overflow-x:auto;padding:0 16px 10px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filter{flex:none;padding:6px 11px;border-radius:99px;border:1px dashed #cdbfae;font-size:12px;font-weight:600;color:var(--muted)}
+.filter[aria-pressed="true"]{border-style:solid;border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+
+/* Разделы и карточки */
+main{padding:4px 16px 140px}
+.section{scroll-margin-top:156px;padding-top:18px}
+.section h2{font:700 22px "Playfair Display",serif;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dish{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);text-align:left;display:flex;flex-direction:column;position:relative;width:100%}
+.dish .ph{aspect-ratio:1;background:#e9dfd2;position:relative;overflow:hidden}
+.dish .ph img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.dish:active .ph img{transform:scale(1.03)}
+.badges{position:absolute;left:8px;top:8px;display:flex;gap:4px;flex-wrap:wrap}
+.badge{font-size:10px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:#fff;padding:3px 7px;border-radius:99px;background:var(--hit)}
+.badge.spicy{background:var(--spicy)}.badge.veg{background:var(--veg)}
+.dish .body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px;flex:1}
+.dish .name{font-weight:700;font-size:14px;line-height:1.25}
+.dish .meta{font-size:12px;color:var(--muted)}
+.dish .row{margin-top:auto;padding-top:8px;display:flex;justify-content:space-between;align-items:center}
+.price{font-weight:800;font-size:15px;white-space:nowrap}
+.add{width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-size:20px;line-height:1;flex:none}
+.add.has{width:auto;padding:0 10px;border-radius:99px;font-size:13px;font-weight:800}
+/* Список */
+.list .grid{grid-template-columns:1fr}
+.list .dish{flex-direction:row;min-height:112px}
+.list .dish .ph{width:112px;flex:none;aspect-ratio:auto}
+.list .badges{display:none}
+.empty{padding:40px 0;text-align:center;color:var(--muted)}
+
+footer{margin:30px 0 0;padding:22px 16px;border-radius:var(--r);background:var(--dark);color:#efe7dc;text-align:center}
+footer p{margin:0 0 12px;font-size:13px;opacity:.8}
+footer a{display:inline-block;background:#25d366;color:#08331a;font-weight:800;padding:12px 18px;border-radius:12px;text-decoration:none}
+
+/* Панель заказа */
+.cartbar{position:fixed;z-index:30;left:0;right:0;bottom:0;padding:10px 16px calc(12px + var(--safe-b));pointer-events:none;transform:translateY(120%);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.cartbar.show{transform:none}
+.cartbar button{pointer-events:auto;max-width:528px;margin:0 auto;width:100%;background:var(--ink);color:#fff;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:10px;box-shadow:0 10px 30px rgba(0,0,0,.25);font-weight:700}
+.cartbar .count{background:var(--accent);border-radius:99px;min-width:26px;height:26px;display:grid;place-items:center;font-size:13px}
+.cartbar .sum{margin-left:auto}
+.bump{animation:bump .35s}
+@keyframes bump{40%{transform:scale(1.04)}}
+
+/* Шторки */
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(20,14,8,.5);opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.show{opacity:1;pointer-events:auto}
+.sheet{position:fixed;z-index:50;left:0;right:0;bottom:0;max-width:560px;margin:0 auto;background:var(--bg);border-radius:24px 24px 0 0;max-height:92vh;max-height:92dvh;overflow-y:auto;transform:translateY(105%);transition:transform .32s cubic-bezier(.2,.8,.2,1);padding-bottom:calc(16px + var(--safe-b))}
+.sheet.show{transform:none}
+.grab{width:40px;height:5px;border-radius:9px;background:#cdbfae;margin:8px auto}
+.close{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;z-index:2;font-size:20px}
+.sheet .big{aspect-ratio:4/3;background:#e9dfd2}
+.sheet .big img{width:100%;height:100%;object-fit:cover}
+.sheet .pad{padding:16px}
+.sheet h3{font:700 24px/1.15 "Playfair Display",serif}
+.sheet .desc{color:var(--muted);margin:8px 0 0}
+.facts{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.facts span{font-size:12px;background:var(--card);border:1px solid var(--line);padding:5px 9px;border-radius:99px}
+.opt{margin-top:16px}
+.opt h4{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{padding:9px 14px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-weight:600;font-size:14px}
+.seg button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.buy{display:flex;gap:10px;margin-top:18px;align-items:center}
+.qty{display:flex;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.qty button{width:44px;height:48px;font-size:22px}
+.qty output{min-width:26px;text-align:center;font-weight:800}
+.primary{flex:1;background:var(--accent);color:#fff;border-radius:14px;height:50px;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px}
+.secondary{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;height:50px;font-weight:700;display:flex;align-items:center;justify-content:center}
+
+.cart-head{display:flex;justify-content:space-between;align-items:baseline;padding:4px 16px 8px}
+.cart-head h3{font-size:24px}
+.cart-head button{color:var(--muted);font-size:13px;text-decoration:underline}
+.line{display:flex;gap:12px;align-items:center;padding:10px 16px;border-top:1px solid var(--line)}
+.line img{width:56px;height:56px;border-radius:12px;object-fit:cover;flex:none}
+.line .t{flex:1;min-width:0}
+.line .t b{display:block;font-size:14px}
+.line .t small{color:var(--muted)}
+.line .qty button{width:34px;height:36px;font-size:18px}
+.totals{padding:12px 16px;border-top:1px solid var(--line)}
+.totals div{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);padding:2px 0}
+.totals .grand{color:var(--ink);font-weight:800;font-size:18px;padding-top:6px}
+.cart-actions{display:flex;flex-direction:column;gap:8px;padding:6px 16px 0}
+.cart-actions .primary,.cart-actions .secondary{flex:none;width:100%}
+.note{font-size:12px;color:var(--muted);text-align:center;margin:10px 16px 0}
+
+/* Экран для официанта */
+.waiter{position:fixed;inset:0;z-index:60;background:#fff;color:#000;overflow-y:auto;padding:22px 20px calc(24px + var(--safe-b));display:none}
+.waiter.show{display:block}
+.waiter .tbl{font:800 44px/1 Manrope,sans-serif}
+.waiter .sub{color:#555;margin:6px 0 18px}
+.waiter ol{list-style:none;margin:0;padding:0}
+.waiter li{display:flex;gap:12px;font-size:22px;font-weight:700;padding:12px 0;border-bottom:2px solid #eee}
+.waiter li .q{min-width:44px}
+.waiter li small{display:block;font-size:15px;color:#555;font-weight:500}
+.waiter .sumw{font-size:26px;font-weight:800;margin:16px 0 22px;text-align:right}
+
+.toast{position:fixed;z-index:70;left:50%;top:16px;transform:translate(-50%,-150%);background:var(--ink);color:#fff;padding:12px 16px;border-radius:14px;font-size:14px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.25);transition:transform .3s;max-width:calc(100% - 32px);text-align:center}
+.toast.show{transform:translate(-50%,0)}
+
+@media (min-width:600px){ .wrap{box-shadow:0 0 0 1px var(--line)} body{background:#ebe3d7} .wrap{background:var(--bg)} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important;scroll-behavior:auto!important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <img src="img/cover.jpg" alt="" width="1200" height="800" fetchpriority="high">
+    <div class="topbar">
+      <span class="demo-tag" data-i="demo">Демо меню</span>
+      <div class="langs" role="group" aria-label="Язык">
+        <button data-lang="ru" aria-pressed="true">RU</button>
+        <button data-lang="kz" aria-pressed="false">KZ</button>
+        <button data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+    <div class="brand">
+      <div class="logo" aria-hidden="true">H</div>
+      <div>
+        <h1>Honey Coffee</h1>
+        <p><span class="open" data-i="open">Открыто до 21:00</span> · <span data-i="kitchen">Кофе, завтраки и десерты</span></p>
+      </div>
+    </div>
+  </header>
+
+  <div class="quick">
+    <button id="waiterCall" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+      <span data-i="call">Официант</span>
+    </button>
+    <button id="wifi" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><path d="M12 20h.01"/></svg>
+      <span>Wi-Fi</span>
+    </button>
+    <button id="billBtn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+      <span data-i="bill">Счёт</span>
+    </button>
+  </div>
+
+  <div class="promo">
+    <div class="pct">−50%</div>
+    <div><b data-i="promoT">Завтраки весь день</b><span data-i="promoS">До 11:00 капучино к любому завтраку — за полцены</span></div>
+  </div>
+
+  <nav class="nav" id="nav" aria-label="Категории меню">
+    <div class="nav-row">
+      <label class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" autocomplete="off" data-ph="search" placeholder="Найти блюдо" aria-label="Поиск по меню">
+      </label>
+      <button class="icon-btn" id="viewBtn" type="button" aria-label="Вид: плитка или список">
+        <svg id="viewIco" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="filters" id="filters"></div>
+  </nav>
+
+  <main id="menu"></main>
+</div>
+
+<div class="cartbar" id="cartbar">
+  <button type="button" id="openCart"><span class="count" id="cCount">0</span><span data-i="myOrder">Мой заказ</span><span class="sum" id="cSum">0 ₸</span></button>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<section class="sheet" id="dishSheet" role="dialog" aria-modal="true" aria-labelledby="dTitle"></section>
+<section class="sheet" id="cartSheet" role="dialog" aria-modal="true" aria-labelledby="cTitle"></section>
+<section class="waiter" id="waiter" role="dialog" aria-modal="true" aria-label="Заказ для официанта"></section>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+var WA = "77000000000"; // WhatsApp владельца для кнопки «Хочу такое меню», формат 7XXXXXXXXXX
+var TABLE = (new URLSearchParams(location.search).get("table") || "7").replace(/\D/g,"").slice(0,3) || "7";
+var SERVICE = 0.10;
+
+var T = {
+  ru:{demo:"Демо меню",open:"Открыто до 21:00",kitchen:"Кофе, завтраки и десерты",call:"Официант",bill:"Счёт",
+      promoT:"Завтраки весь день",promoS:"До 11:00 капучино к любому завтраку — за полцены",search:"Найти блюдо",myOrder:"Мой заказ",
+      hit:"Хит",spicy:"Острое",veg:"Без мяса",add:"В заказ",added:"Добавлено в заказ",portion:"Порция",spice:"Острота",doneness:"Прожарка",
+      order:"Мой заказ",clear:"Очистить",subtotal:"Блюда",service:"Обслуживание 10%",total:"Итого",showWaiter:"Показать официанту",
+      callWaiter:"Позвать официанта",empty:"Заказ пока пуст",nothing:"Ничего не нашлось",table:"Стол",forWaiter:"Покажите экран официанту",
+      back:"Вернуться в меню",calledToast:"Официант идёт к столу ",wifiToast:"Пароль Wi-Fi скопирован: honey2026",billToast:"Официант принесёт счёт к столу ",
+      demoNote:"В демо заказ не уходит на кухню — в рабочей версии он приходит официанту в Telegram.",
+      footer:"Это демо QR-меню. Сделаем такое для вашего заведения: ваши блюда, фото и цены.",footerBtn:"Хочу такое меню",
+      g:"г",ml:"мл",pcs:"шт",kcal:"ккал",allergens:"Аллергены",total2:"на сумму",wa:"Здравствуйте! Посмотрел демо QR-меню, хочу такое для своего заведения."},
+  kz:{demo:"Демо мәзір",open:"21:00-ге дейін ашық",kitchen:"Кофе, таңғы ас және десерттер",call:"Даяшы",bill:"Шот",
+      promoT:"Таңғы ас күні бойы",promoS:"Сағат 11:00-ге дейін кез келген таңғы асқа капучино −50%",search:"Тағам іздеу",myOrder:"Менің тапсырысым",
+      hit:"Хит",spicy:"Ащы",veg:"Етсіз",add:"Тапсырысқа",added:"Тапсырысқа қосылды",portion:"Порция",spice:"Ащылығы",doneness:"Қуырылу деңгейі",
+      order:"Менің тапсырысым",clear:"Тазалау",subtotal:"Тағамдар",service:"Қызмет көрсету 10%",total:"Барлығы",showWaiter:"Даяшыға көрсету",
+      callWaiter:"Даяшыны шақыру",empty:"Тапсырыс әзірге бос",nothing:"Ештеңе табылмады",table:"Үстел",forWaiter:"Экранды даяшыға көрсетіңіз",
+      back:"Мәзірге оралу",calledToast:"Даяшы үстелге келе жатыр ",wifiToast:"Wi-Fi құпиясөзі көшірілді: honey2026",billToast:"Даяшы шотты үстелге әкеледі ",
+      demoNote:"Демода тапсырыс асүйге жіберілмейді — жұмыс нұсқасында ол даяшыға Telegram арқылы келеді.",
+      footer:"Бұл — QR-мәзірдің демо нұсқасы. Сіздің мекемеңізге де осындай жасаймыз.",footerBtn:"Маған да осындай мәзір",
+      g:"г",ml:"мл",pcs:"дана",kcal:"ккал",allergens:"Аллергендер",total2:"сомасы",wa:"Сәлеметсіз бе! QR-мәзірдің демосын көрдім, мекемеме осындай керек."},
+  en:{demo:"Demo menu",open:"Open until 21:00",kitchen:"Coffee, breakfast & desserts",call:"Waiter",bill:"Bill",
+      promoT:"Breakfast all day",promoS:"Until 11:00 — cappuccino −50% with any breakfast",search:"Search the menu",myOrder:"My order",
+      hit:"Popular",spicy:"Spicy",veg:"Meat-free",add:"Add",added:"Added to your order",portion:"Portion",spice:"Spice level",doneness:"Doneness",
+      order:"My order",clear:"Clear",subtotal:"Dishes",service:"Service 10%",total:"Total",showWaiter:"Show to waiter",
+      callWaiter:"Call the waiter",empty:"Your order is empty",nothing:"Nothing found",table:"Table",forWaiter:"Show this screen to your waiter",
+      back:"Back to menu",calledToast:"A waiter is coming to table ",wifiToast:"Wi-Fi password copied: honey2026",billToast:"The bill is coming to table ",
+      demoNote:"In this demo the order is not sent to the kitchen — in the live version it goes to the waiter via Telegram.",
+      footer:"This is a demo QR menu. We will build one for your venue: your dishes, photos and prices.",footerBtn:"I want this menu",
+      g:"g",ml:"ml",pcs:"pcs",kcal:"kcal",allergens:"Allergens",total2:"total",wa:"Hello! I saw the QR menu demo and want one for my venue."}
+};
+
+var CATS = [
+  {id:"coffee",ru:"Кофе",kz:"Кофе",en:"Coffee"},
+  {id:"nocoffee",ru:"Не кофе",kz:"Кофесіз",en:"Not coffee"},
+  {id:"breakfast",ru:"Завтраки",kz:"Таңғы ас",en:"Breakfast"},
+  {id:"desserts",ru:"Выпечка и десерты",kz:"Тоқаш және десерттер",en:"Pastry & desserts"}
+];
+
+var D = [
+  {id:"cappuccino",cat:"coffee",price:1300,w:"250",u:"ml",kcal:120,tags:["hit"],al:{ru:"молоко",kz:"сүт",en:"milk"},
+   n:{ru:"Капучино",kz:"Капучино",en:"Cappuccino"},
+   d:{ru:"Двойной эспрессо и вспененное молоко. Можно на овсяном.",kz:"Қос эспрессо және көпірштірілген сүт. Сұлы сүтімен де болады.",en:"Double espresso and steamed milk. Oat milk available."},
+   opt:{k:"portion",v:[{ru:"250 мл",kz:"250 мл",en:"250 ml",p:0},{ru:"350 мл",kz:"350 мл",en:"350 ml",p:300}]}},
+  {id:"raf",cat:"coffee",price:1800,w:"350",u:"ml",kcal:290,tags:["hit"],al:{ru:"молоко",kz:"сүт",en:"milk"},
+   n:{ru:"Медовый раф",kz:"Балды раф",en:"Honey raf"},
+   d:{ru:"Эспрессо, сливки и цветочный мёд, взбитые в нежную пенку.",kz:"Эспрессо, кілегей және гүл балы, нәзік көбікке дейін көпірштірілген.",en:"Espresso, cream and wildflower honey whipped into a soft foam."}},
+  {id:"flatwhite",cat:"coffee",price:1500,w:"200",u:"ml",kcal:110,tags:[],al:{ru:"молоко",kz:"сүт",en:"milk"},
+   n:{ru:"Флэт уайт",kz:"Флэт уайт",en:"Flat white"},
+   d:{ru:"Двойной ристретто и бархатное молоко — крепче капучино.",kz:"Қос ристретто және барқыт сүт — капучинодан қоюырақ.",en:"Double ristretto and velvety milk — stronger than a cappuccino."}},
+  {id:"icelatte",cat:"coffee",price:1700,w:"400",u:"ml",kcal:150,tags:[],al:{ru:"молоко",kz:"сүт",en:"milk"},
+   n:{ru:"Айс латте",kz:"Айс латте",en:"Iced latte"},
+   d:{ru:"Эспрессо, холодное молоко и лёд. Сироп — по желанию.",kz:"Эспрессо, суық сүт және мұз. Сироп — қалауыңызша.",en:"Espresso, cold milk and ice. Syrup on request."}},
+  {id:"matcha",cat:"nocoffee",price:1900,w:"350",u:"ml",kcal:170,tags:["veg"],al:{ru:"молоко",kz:"сүт",en:"milk"},
+   n:{ru:"Матча латте",kz:"Матча латте",en:"Matcha latte"},
+   d:{ru:"Японский чай матча, взбитый вручную, на молоке.",kz:"Қолмен көпірштірілген жапон матча шайы, сүтпен.",en:"Hand-whisked Japanese matcha with milk."}},
+  {id:"cocoa",cat:"nocoffee",price:1500,w:"350",u:"ml",kcal:310,tags:["veg"],al:{ru:"молоко",kz:"сүт",en:"milk"},
+   n:{ru:"Какао с маршмеллоу",kz:"Маршмеллоу қосылған какао",en:"Cocoa with marshmallows"},
+   d:{ru:"Горячий шоколадный какао на молоке с маршмеллоу.",kz:"Сүтке дайындалған ыстық какао, маршмеллоумен.",en:"Hot cocoa made with milk, topped with marshmallows."}},
+  {id:"tea",cat:"nocoffee",price:2200,w:"600",u:"ml",kcal:90,tags:["veg"],al:{ru:"—",kz:"—",en:"—"},
+   n:{ru:"Облепиховый чай с мёдом",kz:"Балмен шырғанақ шайы",en:"Sea buckthorn tea with honey"},
+   d:{ru:"Облепиха, апельсин, мёд и имбирь. Чайник на двоих.",kz:"Шырғанақ, апельсин, бал және зімбір. Екі адамға шәйнек.",en:"Sea buckthorn, orange, honey and ginger. A pot for two."}},
+  {id:"lemonade",cat:"nocoffee",price:1600,w:"400",u:"ml",kcal:140,tags:["veg"],al:{ru:"—",kz:"—",en:"—"},
+   n:{ru:"Малиновый лимонад",kz:"Таңқурай лимонады",en:"Raspberry lemonade"},
+   d:{ru:"Домашний лимонад с малиной, мятой и льдом.",kz:"Таңқурай, жалбыз және мұз қосылған үй лимонады.",en:"Homemade lemonade with raspberry, mint and ice."}},
+  {id:"pancakes",cat:"breakfast",price:1900,w:"220",u:"g",kcal:460,tags:["veg","hit"],al:{ru:"молоко, яйца, глютен",kz:"сүт, жұмыртқа, глютен",en:"milk, eggs, gluten"},
+   n:{ru:"Панкейки с ягодами",kz:"Жидекті панкейктер",en:"Pancakes with berries"},
+   d:{ru:"Три пышных панкейка, сливочный крем, ягоды и мёд.",kz:"Үш үлпілдек панкейк, кілегей крем, жидектер және бал.",en:"Three fluffy pancakes, cream, berries and honey."}},
+  {id:"avocado",cat:"breakfast",price:2900,w:"230",u:"g",kcal:420,tags:["veg"],al:{ru:"яйца, глютен",kz:"жұмыртқа, глютен",en:"eggs, gluten"},
+   n:{ru:"Тост с авокадо и яйцом",kz:"Авокадо мен жұмыртқа қосылған тост",en:"Avocado toast with egg"},
+   d:{ru:"Хлеб на закваске, авокадо, яйцо и микрозелень.",kz:"Ашытқы нан, авокадо, жұмыртқа және микрокөк.",en:"Sourdough, avocado, an egg and microgreens."},
+   opt:{k:"portion",v:[{ru:"Яйцо пашот",kz:"Пашот жұмыртқа",en:"Poached egg",p:0},{ru:"Яйцо и лосось",kz:"Жұмыртқа және лосось",en:"Egg and salmon",p:1400}]}},
+  {id:"granola",cat:"breakfast",price:2100,w:"250",u:"g",kcal:380,tags:["veg"],al:{ru:"молоко, орехи, глютен",kz:"сүт, жаңғақ, глютен",en:"milk, nuts, gluten"},
+   n:{ru:"Гранола с йогуртом",kz:"Йогуртпен гранола",en:"Granola with yogurt"},
+   d:{ru:"Греческий йогурт, домашняя гранола, ягоды и мёд.",kz:"Грек йогурты, үй гранола, жидектер және бал.",en:"Greek yogurt, house granola, berries and honey."}},
+  {id:"croissant",cat:"desserts",price:1200,w:"90",u:"g",kcal:340,tags:["veg"],al:{ru:"молоко, глютен",kz:"сүт, глютен",en:"milk, gluten"},
+   n:{ru:"Круассан с мёдом",kz:"Балмен круассан",en:"Croissant with honey"},
+   d:{ru:"Сливочный круассан, к нему — порция мёда.",kz:"Сары майлы круассан, бір порция балмен.",en:"Butter croissant served with a little pot of honey."}},
+  {id:"medovik",cat:"desserts",price:1800,w:"140",u:"g",kcal:450,tags:["veg","hit"],al:{ru:"молоко, яйца, глютен",kz:"сүт, жұмыртқа, глютен",en:"milk, eggs, gluten"},
+   n:{ru:"Медовик",kz:"Медовик",en:"Honey cake"},
+   d:{ru:"Тонкие медовые коржи и сметанный крем.",kz:"Жұқа балды қабаттар және қаймақ крем.",en:"Thin honey layers with sour cream frosting."}},
+  {id:"cheesecake",cat:"desserts",price:2000,w:"150",u:"g",kcal:420,tags:["veg"],al:{ru:"молоко, яйца",kz:"сүт, жұмыртқа",en:"milk, eggs"},
+   n:{ru:"Баскский чизкейк",kz:"Баск чизкейгі",en:"Basque cheesecake"},
+   d:{ru:"Сливочный чизкейк с карамельной корочкой.",kz:"Карамель қабықты кілегейлі чизкейк.",en:"Creamy cheesecake with a caramelised top."}}
+];
+var byId = {}; D.forEach(function(x){ byId[x.id]=x; });
+
+var lang = "ru", view = "grid", filters = {}, cart = [];
+function store(k,v){ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } }
+try{ var sl = store("qm_lang"); if(sl && T[sl]) lang = sl; var sv = store("qm_view"); if(sv==="list"||sv==="grid") view = sv;
+     var sc = JSON.parse(store("qm_cart")||"[]"); if(Array.isArray(sc)) cart = sc.filter(validLine); }catch(e){ cart = []; }
+/* Корзина из localStorage могла устареть: пропускаем строки с чужими индексами и количеством */
+function validLine(l){
+  if(!l || typeof l!=="object" || !byId[l.id]) return false;
+  if(!(Number.isInteger(l.q) && l.q>0 && l.q<=99)) return false;
+  var x = byId[l.id];
+  if(x.opt) return Number.isInteger(l.o) && l.o>=0 && l.o<x.opt.v.length;
+  return l.o==null;
+}
+
+var $ = function(s){ return document.querySelector(s); };
+function t(k){ return T[lang][k] || T.ru[k] || k; }
+function L(o){ return (o && (o[lang] || o.ru)) || ""; }
+function money(n){ return n.toLocaleString("ru-RU").replace(/ /g," ") + " ₸"; }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function img(id){ return "img/" + id + ".jpg"; }
+function unit(x){ return x.w + " " + t(x.u); }
+
+function applyStatic(){
+  document.documentElement.lang = lang === "kz" ? "kk" : lang;
+  document.querySelectorAll("[data-i]").forEach(function(el){ el.textContent = t(el.getAttribute("data-i")); });
+  $("#q").placeholder = t("search");
+  document.querySelectorAll(".langs button").forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.lang === lang); });
+}
+
+function renderChips(){
+  $("#chips").innerHTML = CATS.map(function(c,i){ return '<button class="chip" data-cat="'+c.id+'" aria-current="'+(i===0)+'">'+esc(L(c))+'</button>'; }).join("");
+  $("#filters").innerHTML = ["hit","spicy","veg"].map(function(f){ return '<button class="filter" data-f="'+f+'" aria-pressed="'+(!!filters[f])+'">'+esc(t(f))+'</button>'; }).join("");
+}
+
+function inCart(id){ return cart.filter(function(l){ return l.id===id; }).reduce(function(s,l){ return s+l.q; },0); }
+
+function card(x){
+  var n = inCart(x.id);
+  var badges = x.tags.map(function(g){ return '<span class="badge '+g+'">'+esc(t(g))+'</span>'; }).join("");
+  return '<article class="dish" data-id="'+x.id+'" role="button" tabindex="0" aria-label="'+esc(L(x.n))+', '+money(x.price)+'">'+
+    '<div class="ph"><img src="'+img(x.id)+'" alt="" loading="lazy" width="400" height="400"><div class="badges">'+badges+'</div></div>'+
+    '<div class="body"><div class="name">'+esc(L(x.n))+'</div><div class="meta">'+esc(unit(x))+'</div>'+
+    '<div class="row"><span class="price">'+money(x.price)+'</span>'+
+    '<button class="add'+(n?' has':'')+'" data-quick="'+x.id+'" aria-label="'+esc(t("add"))+'">'+(n?('× '+n):'+')+'</button></div></div></article>';
+}
+
+function renderMenu(){
+  var q = $("#q").value.trim().toLowerCase();
+  var active = Object.keys(filters).filter(function(k){ return filters[k]; });
+  var html = "", any = false;
+  CATS.forEach(function(c){
+    var items = D.filter(function(x){
+      if(x.cat!==c.id) return false;
+      if(active.length && !active.every(function(f){ return x.tags.indexOf(f)>-1; })) return false;
+      if(q){ var hay = [x.n.ru,x.n.en,x.n.kz||"",x.d.ru,x.d.en].join(" ").toLowerCase(); if(hay.indexOf(q)<0) return false; }
+      return true;
+    });
+    if(!items.length) return;
+    any = true;
+    html += '<section class="section" id="s-'+c.id+'"><h2>'+esc(L(c))+'</h2><div class="grid">'+items.map(card).join("")+'</div></section>';
+  });
+  if(!any) html = '<p class="empty">'+esc(t("nothing"))+'</p>';
+  html += '<footer><p>'+esc(t("footer"))+'</p><a href="https://wa.me/'+WA+'?text='+encodeURIComponent(t("wa"))+'" target="_blank" rel="noopener">'+esc(t("footerBtn"))+'</a></footer>';
+  var m = $("#menu"); m.innerHTML = html; m.classList.toggle("list", view==="list");
+  document.querySelectorAll(".chip").forEach(function(ch){ ch.hidden = !document.getElementById("s-"+ch.dataset.cat); });
+  spy();
+}
+
+/* Корзина */
+function save(){ store("qm_cart", JSON.stringify(cart)); }
+function lineKey(id,o){ return id + "|" + (o==null?"":o); }
+function linePrice(l){ var x = byId[l.id]; var add = (x.opt && l.o!=null) ? x.opt.v[l.o].p : 0; return x.price + add; }
+function subtotal(){ return cart.reduce(function(s,l){ return s + linePrice(l)*l.q; },0); }
+function count(){ return cart.reduce(function(s,l){ return s + l.q; },0); }
+function addToCart(id,o,q){
+  var k = lineKey(id,o), f = cart.filter(function(l){ return lineKey(l.id,l.o)===k; })[0];
+  if(f) f.q += q; else cart.push({id:id,o:o,q:q});
+  save(); updateBar(true); renderMenu();
+}
+function updateBar(bump){
+  var c = count(); $("#cCount").textContent = c; $("#cSum").textContent = money(subtotal());
+  $("#cartbar").classList.toggle("show", c>0);
+  if(bump){ var b = $("#openCart"); b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump"); }
+}
+
+/* Шторки */
+var openSheet = null, lastFocus = null;
+function show(el){
+  lastFocus = document.activeElement;
+  if(openSheet && openSheet!==el) openSheet.classList.remove("show");
+  openSheet = el; el.classList.add("show"); $("#scrim").classList.add("show");
+  document.body.style.overflow = "hidden";
+  var f = el.querySelector("button"); if(f) f.focus({preventScroll:true});
+}
+function hide(){
+  if(openSheet) openSheet.classList.remove("show");
+  openSheet = null; $("#scrim").classList.remove("show"); document.body.style.overflow = "";
+  if(lastFocus && lastFocus.focus) lastFocus.focus({preventScroll:true});
+}
+
+function openDish(id){
+  var x = byId[id], o = x.opt ? 0 : null, q = 1;
+  var el = $("#dishSheet");
+  function draw(){
+    var p = x.price + (x.opt ? x.opt.v[o].p : 0);
+    el.innerHTML = '<button class="close" data-close aria-label="Закрыть">×</button>'+
+      '<div class="big"><img src="'+img(x.id)+'" alt="'+esc(L(x.n))+'"></div><div class="pad">'+
+      '<h3 id="dTitle">'+esc(L(x.n))+'</h3><p class="desc">'+esc(L(x.d))+'</p>'+
+      '<div class="facts"><span>'+esc(unit(x))+'</span><span>'+x.kcal+' '+esc(t("kcal"))+'</span>'+
+      x.tags.map(function(g){ return '<span>'+esc(t(g))+'</span>'; }).join("")+'</div>'+
+      '<p class="desc" style="font-size:13px">'+esc(t("allergens"))+': '+esc(L(x.al))+'</p>'+
+      (x.opt ? '<div class="opt"><h4>'+esc(t(x.opt.k))+'</h4><div class="seg">'+x.opt.v.map(function(v,i){
+        return '<button data-o="'+i+'" aria-pressed="'+(i===o)+'">'+esc(L(v))+(v.p?' +'+money(v.p):'')+'</button>'; }).join("")+'</div></div>' : '')+
+      '<div class="buy"><div class="qty"><button data-q="-1" aria-label="Меньше">−</button><output>'+q+'</output><button data-q="1" aria-label="Больше">+</button></div>'+
+      '<button class="primary" data-addnow>'+esc(t("add"))+' · '+money(p*q)+'</button></div></div>';
+  }
+  draw();
+  el.onclick = function(e){
+    var b = e.target.closest("button"); if(!b) return;
+    if(b.hasAttribute("data-close")) return hide();
+    if(b.dataset.o!=null){ o = +b.dataset.o; draw(); el.querySelector('[data-o="'+o+'"]').focus(); return; }
+    if(b.dataset.q){ q = Math.max(1, Math.min(20, q + (+b.dataset.q))); draw(); return; }
+    if(b.hasAttribute("data-addnow")){ addToCart(x.id,o,q); hide(); toast(t("added")); }
+  };
+  show(el);
+}
+
+function openCart(){
+  var el = $("#cartSheet");
+  function draw(){
+    if(!cart.length){ el.innerHTML = '<div class="grab"></div><div class="cart-head"><h3 class="serif" id="cTitle">'+esc(t("order"))+'</h3></div><p class="empty">'+esc(t("empty"))+'</p>'; return; }
+    var sub = subtotal(), srv = Math.round(sub*SERVICE);
+    el.innerHTML = '<div class="grab"></div><div class="cart-head"><h3 class="serif" id="cTitle">'+esc(t("order"))+'</h3><button data-clear>'+esc(t("clear"))+'</button></div>'+
+      cart.map(function(l,i){ var x = byId[l.id];
+        return '<div class="line"><img src="'+img(x.id)+'" alt=""><div class="t"><b>'+esc(L(x.n))+'</b><small>'+
+          (x.opt && l.o!=null ? esc(L(x.opt.v[l.o]))+' · ' : '')+money(linePrice(l))+'</small></div>'+
+          '<div class="qty"><button data-li="'+i+'" data-d="-1" aria-label="Меньше">−</button><output>'+l.q+'</output><button data-li="'+i+'" data-d="1" aria-label="Больше">+</button></div></div>'; }).join("")+
+      '<div class="totals"><div><span>'+esc(t("subtotal"))+'</span><span>'+money(sub)+'</span></div><div><span>'+esc(t("service"))+'</span><span>'+money(srv)+'</span></div>'+
+      '<div class="grand"><span>'+esc(t("total"))+'</span><span>'+money(sub+srv)+'</span></div></div>'+
+      '<div class="cart-actions"><button class="primary" data-waiter>'+esc(t("showWaiter"))+'</button><button class="secondary" data-call>'+esc(t("callWaiter"))+'</button></div>'+
+      '<p class="note">'+esc(t("demoNote"))+'</p>';
+  }
+  draw();
+  el.onclick = function(e){
+    var b = e.target.closest("button"); if(!b) return;
+    if(b.hasAttribute("data-clear")){ cart = []; save(); updateBar(); renderMenu(); draw(); return; }
+    if(b.dataset.li!=null){ var l = cart[+b.dataset.li]; l.q += +b.dataset.d; if(l.q<=0) cart.splice(+b.dataset.li,1);
+      save(); updateBar(); renderMenu(); draw(); if(!cart.length) setTimeout(hide,400); return; }
+    if(b.hasAttribute("data-waiter")) return openWaiter();
+    if(b.hasAttribute("data-call")){ hide(); toast(t("calledToast")+TABLE); }
+  };
+  show(el);
+}
+
+function openWaiter(){
+  hide();
+  var sub = subtotal(), srv = Math.round(sub*SERVICE);
+  var w = $("#waiter");
+  w.innerHTML = '<div class="tbl">'+esc(t("table"))+' '+esc(TABLE)+'</div><p class="sub">'+esc(t("forWaiter"))+'</p><ol>'+
+    cart.map(function(l){ var x = byId[l.id];
+      return '<li><span class="q">'+l.q+'×</span><span>'+esc(x.n.ru)+(x.opt && l.o!=null ? '<small>'+esc(x.opt.v[l.o].ru)+'</small>' : '')+'</span></li>'; }).join("")+
+    '</ol><div class="sumw">'+esc(t("total"))+': '+money(sub+srv)+'</div><button class="primary" style="width:100%" data-back>'+esc(t("back"))+'</button>';
+  w.classList.add("show"); document.body.style.overflow = "hidden";
+  w.querySelector("[data-back]").onclick = function(){ w.classList.remove("show"); document.body.style.overflow = ""; $("#openCart").focus(); };
+  w.querySelector("[data-back]").focus();
+}
+
+var tt; function toast(msg){ var el = $("#toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(tt); tt = setTimeout(function(){ el.classList.remove("show"); }, 2600); }
+
+/* Подсветка категории при прокрутке */
+var spying = true;
+function spy(){
+  if(!spying) return;
+  var secs = document.querySelectorAll(".section"), cur = null;
+  secs.forEach(function(s){ if(s.getBoundingClientRect().top < 175) cur = s.id; });
+  if(!cur && secs[0]) cur = secs[0].id;
+  document.querySelectorAll(".chip").forEach(function(ch){
+    var on = "s-"+ch.dataset.cat === cur;
+    if(on && ch.getAttribute("aria-current")!=="true"){
+      var box = $("#chips"); box.scrollTo({left: ch.offsetLeft - 16, behavior:"smooth"});
+    }
+    ch.setAttribute("aria-current", on);
+  });
+  $("#nav").classList.toggle("stuck", $("#nav").getBoundingClientRect().top <= 0);
+}
+var raf; window.addEventListener("scroll", function(){ cancelAnimationFrame(raf); raf = requestAnimationFrame(spy); }, {passive:true});
+
+/* События */
+$("#chips").addEventListener("click", function(e){
+  var ch = e.target.closest(".chip"); if(!ch) return;
+  var s = document.getElementById("s-"+ch.dataset.cat); if(!s) return;
+  spying = false;
+  document.querySelectorAll(".chip").forEach(function(c){ c.setAttribute("aria-current", c===ch); });
+  s.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+  setTimeout(function(){ spying = true; }, 700);
+});
+$("#filters").addEventListener("click", function(e){
+  var f = e.target.closest(".filter"); if(!f) return;
+  filters[f.dataset.f] = !filters[f.dataset.f]; f.setAttribute("aria-pressed", filters[f.dataset.f]); renderMenu();
+});
+$("#q").addEventListener("input", renderMenu);
+$("#menu").addEventListener("click", function(e){
+  var qb = e.target.closest("[data-quick]");
+  if(qb){ e.stopPropagation(); var x = byId[qb.dataset.quick]; if(x.opt) return openDish(x.id); addToCart(x.id,null,1); toast(t("added")); return; }
+  var d = e.target.closest(".dish"); if(d) openDish(d.dataset.id);
+});
+$("#menu").addEventListener("keydown", function(e){
+  if((e.key==="Enter"||e.key===" ") && e.target.classList.contains("dish")){ e.preventDefault(); openDish(e.target.dataset.id); }
+});
+$("#viewBtn").addEventListener("click", function(){
+  view = view==="grid" ? "list" : "grid"; store("qm_view", view); setViewIcon(); renderMenu();
+});
+function setViewIcon(){
+  $("#viewIco").innerHTML = view==="grid" ? '<path d="M4 6h16M4 12h16M4 18h16"/>' : '<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>';
+}
+document.querySelector(".langs").addEventListener("click", function(e){
+  var b = e.target.closest("button"); if(!b) return;
+  lang = b.dataset.lang; store("qm_lang", lang); applyStatic(); renderChips(); renderMenu();
+});
+$("#openCart").addEventListener("click", openCart);
+$("#scrim").addEventListener("click", hide);
+document.addEventListener("keydown", function(e){
+  if(e.key!=="Escape") return;
+  var w = $("#waiter"); if(w.classList.contains("show")){ w.querySelector("[data-back]").click(); return; }
+  if(openSheet) hide();
+});
+$("#waiterCall").addEventListener("click", function(){ toast(t("calledToast")+TABLE); });
+$("#billBtn").addEventListener("click", function(){ toast(t("billToast")+TABLE); });
+$("#wifi").addEventListener("click", function(){
+  try{ if(navigator.clipboard) navigator.clipboard.writeText("honey2026").catch(function(){}); }catch(e){}
+  toast(t("wifiToast"));
+});
+
+applyStatic(); setViewIcon(); renderChips(); renderMenu(); updateBar();
+})();
+</script>
+</body>
+</html>
